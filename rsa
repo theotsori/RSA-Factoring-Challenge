@@ -21,6 +21,7 @@ def pollard_rho(n):
         if gcd != 1:
             return gcd, n // gcd
 
+
 def factorize(n):
     # Keep factorizing until n is prime
     while True:
@@ -30,8 +31,10 @@ def factorize(n):
         n = p
     return (p, q)
 
+
 # Read the number from the file
 with open(sys.argv[1], 'r') as f:
+
     number = int(f.read().strip())
 
 # Factorize the number and print the result
