@@ -1,0 +1,39 @@
+#!/usr/bin/python3
+import random
+
+
+def pollard_rho(n):
+    if n == 1:
+        return (1, 1)
+
+    # Choose a random integer a in the range [2, n - 1]
+    a = random.randint(2, n - 1)
+
+    # Initialize the sequence with the first two elements
+    s = [a, (a * a) % n]
+    for i in range(2, n):
+        s.append((s[-1] * s[-1]) % n)
+
+        # Compute the greatest common divisor of the current element and n
+        gcd = math.gcd(s[-1] - s[-2], n)
+
+        # If the gcd is not 1, we have found a divisor of n
+        if gcd != 1:
+            return gcd, n // gcd
+
+def factorize(n):
+    # Keep factorizing until n is prime
+    while True:
+        p, q = pollard_rho(n)
+        if p == 1:
+            return (n, 1)
+        n = p
+    return (p, q)
+
+# Read the number from the file
+with open(sys.argv[1], 'r') as f:
+    number = int(f.read().strip())
+
+# Factorize the number and print the result
+p, q = factorize(number)
+print(f'{number}={p}*{q}')
