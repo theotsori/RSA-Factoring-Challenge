@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# Check if a file was provided as an argument
+if [ $# -ne 1 ]; then
+  echo "Usage: factors <file>"
+  exit 1
+fi
+
+# Read the file and factorize each number
+while read n; do
+  # Find the smallest factor of n
+  for (( i=2; i<=n/2; i++ )); do
+    if [ $((n%i)) -eq 0 ]; then
+      # Print the factorization and exit the loop
+      echo "$n=$i*$((n/i))"
+      break
+    fi
+  done
+done < $1
+

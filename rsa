@@ -1,42 +1,32 @@
 #!/usr/bin/python3
-import random
+import sys
 
+def prime_factors(n):
+    factors = []
+    # Divide by 2 as many times as possible
+    while n % 2 == 0:
+        factors.append(2)
+        n //= 2
+    # Divide by odd numbers until n is reduced to 1
+    for i in range(3, int(n ** 0.5) + 1, 2):
+        while n % i == 0:
+            factors.append(i)
+            n //= i
+    # Add the remaining factor if it is greater than 2
+    if n > 2:
+        factors.append(n)
+    return factors
 
-def pollard_rho(n):
-    if n == 1:
-        return (1, 1)
+# Check if a file was provided as an argument
+if len(sys.argv) != 2:
+    print("Usage: factors <file>")
+    sys.exit(1)
 
-    # Choose a random integer a in the range [2, n - 1]
-    a = random.randint(2, n - 1)
+# Read the file and factorize each number
+with open(sys.argv[1], "r") as f:
+    for line in f:
+        n = int(line.strip())
+        factors = prime_factors(n)
+        print(f"{n}=", end="")
+        print("*".join(str(f) for f in factors))
 
-    # Initialize the sequence with the first two elements
-    s = [a, (a * a) % n]
-    for i in range(2, n):
-        s.append((s[-1] * s[-1]) % n)
-
-        # Compute the greatest common divisor of the current element and n
-        gcd = math.gcd(s[-1] - s[-2], n)
-
-        # If the gcd is not 1, we have found a divisor of n
-        if gcd != 1:
-            return gcd, n // gcd
-
-
-def factorize(n):
-    # Keep factorizing until n is prime
-    while True:
-        p, q = pollard_rho(n)
-        if p == 1:
-            return (n, 1)
-        n = p
-    return (p, q)
-
-
-# Read the number from the file
-with open(sys.argv[1], 'r') as f:
-
-    number = int(f.read().strip())
-
-# Factorize the number and print the result
-p, q = factorize(number)
-print(f'{number}={p}*{q}')
