@@ -1,15 +1,16 @@
 #!/usr/bin/python3
 import sys
 
+
 def factorize(n):
-    # Find the smallest factor of n
+    """Find the smallest factor of n"""
     for i in range(2, n):
         if n % i == 0:
             return (i, n // i)
-    # n is prime, so it cannot be factorized further
     return (n, 1)
 
-# Read numbers from the file
+
+"""Read numbers from the file"""
 with open(sys.argv[1], 'r') as f:
     for line in f:
         n = int(line.strip())
